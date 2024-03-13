@@ -45,3 +45,9 @@ export async function addBannerService(data , token){
         return {code: -1 , message: "Unable to connect server"}
     }
 }
+export async function deleteBannerService(bannerId, token) {
+    const response = await axios.delete(`${URI}/api/admin/banner/remove/${bannerId}`, {
+        headers: { Authorization: `${token}` },
+    });
+    return response.data; 
+}

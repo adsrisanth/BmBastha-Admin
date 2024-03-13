@@ -67,6 +67,27 @@ async function addBanner(){
     bannerStore.isAddingItemInProgess = false
 }
 
+import { deleteBannerService } from '@/service/admin/banner'; 
+async function deleteBanner(bannerId) {
+    if (!confirm("Are you sure you want to delete this banner?")) return;
+
+    loaderStore.showLoader = true; 
+    try {
+        const result = await deleteBannerService(bannerId, userStore.token);
+        if (result.code == 1) {
+            alert("Banner deleted successfully");
+            await fetchBannerListFromDB();
+        } else {
+            alert("Failed to delete the banner: " + result.message);
+        }
+    } catch (error) {
+        console.error("Error deleting banner:", error);
+        alert("An error occurred while trying to delete the banner.");
+    } finally {
+        loaderStore.showLoader = false; 
+    }
+}
+
 </script>
 
 <template>
@@ -129,6 +150,9 @@ async function addBanner(){
             </td>
             <td class="py-4 px-6 text-right">
               <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+            </td>
+            <td class="py-4 px-6 text-right">
+              <button @click="deleteBanner(banner.banner_id)" class="font-medium text-red-600 hover:text-red-700">Delete</button>
             </td>
           </tr>
         </tbody>
