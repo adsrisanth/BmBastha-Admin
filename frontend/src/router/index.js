@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import Banner from '../views/Banners.vue'
+import Banner from '../views/BannersView.vue'
 import SignIn from '@/Stuff/SignIn.vue'
 import loader from '@/Stuff/loader.vue'
+import Home from '@/views/HomeBarView.vue'
+import Product from '@/views/ProductView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -20,6 +22,19 @@ const router = createRouter({
       path:'/load',
       name:'load',
       component: loader
+    },
+    {
+      path: '/home',
+      name: 'home',
+      component: Home
+    },
+    {
+      path: '/product',
+      name: 'product',
+      component: Product
+    },
+    {
+      
     }
   ]
 })
