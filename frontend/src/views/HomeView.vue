@@ -9,16 +9,16 @@
       <div class="h-[calc(100vh-50px)] bg-white text-green-700 border border-gray-300 py-[20px]">
         <div class="flex flex-col justify-between h-full px-[20px] space-y-[10px]">
           <div class=" flex flex-col justify-between space-y-[10px]">
-            <router-link to="/" class="inline-flex relative items-center py-[10px] px-[10px] w-full text-sm font-merriweather text-[18px] rounded-md border-gray-200 hover:bg-gray-200 hover:text-green-800  transition duration-400 ease-in-out">
+            <router-link to="/" class="inline-flex relative items-center py-[10px] px-[10px] w-full text-sm font-merriweather text-[19px] rounded-md border-gray-200 hover:bg-gray-200 hover:text-green-800  transition duration-400 ease-in-out">
               Home
             </router-link>
-            <router-link to="/banner" class="inline-flex relative items-center py-[10px] px-[10px] w-full text-sm font-merriweather text-[18px] rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <router-link to="/banner" class="inline-flex relative items-center py-[10px] px-[10px] w-full text-sm font-merriweather text-[19px] rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               Banner
             </router-link>
           </div>
           <div class="h-[50px]">
             <div>
-              <router-link to="/setting" class="inline-flex relative items-center py-[10px] px-[10px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300 hover:text-green-800  transition duration-400 ease-in-out">
+              <router-link to="/settings" class="inline-flex relative items-center py-[10px] px-[10px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300 hover:text-green-800  transition duration-400 ease-in-out">
                 Settings
               </router-link>
             </div>
