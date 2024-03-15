@@ -15,8 +15,17 @@
             <router-link to="/banner" class="inline-flex relative items-center py-[10px] px-[10px] w-full text-sm font-merriweather text-[19px] rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               Banner
             </router-link>
-            <router-link to="/product" class="inline-flex relative items-center py-[10px] px-[10px] w-full text-sm font-merriweather text-[19px] rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <router-link to="/products" class="inline-flex relative items-center py-[10px] px-[10px] w-full text-sm font-merriweather text-[19px] rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               Products
+            </router-link>
+            <router-link to="/categories" class="inline-flex relative items-center py-[10px] px-[10px] w-full text-sm font-merriweather text-[19px] rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+             Categories
+            </router-link>
+            <router-link to="/brands" class="inline-flex relative items-center py-[10px] px-[10px] w-full text-sm font-merriweather text-[19px] rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+             Brands
+            </router-link>
+            <router-link to="/orders" class="inline-flex relative items-center py-[10px] px-[10px] w-full text-sm font-merriweather text-[19px] rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+             Orders
             </router-link>
           </div>
           <div class="h-[50px]">

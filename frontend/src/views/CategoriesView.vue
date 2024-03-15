@@ -33,7 +33,7 @@ onBeforeMount(async () => {
 });
 
 const newItem = ref({
-  title: '',
+  productId: '',
   image: '',
   isactive: true,
   link: '',
