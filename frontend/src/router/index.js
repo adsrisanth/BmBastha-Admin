@@ -28,7 +28,7 @@ const router = createRouter({
       component: loader
     },
     {
-      path: '/home',
+      path: '/',
       name: 'home',
       component: Home
     },

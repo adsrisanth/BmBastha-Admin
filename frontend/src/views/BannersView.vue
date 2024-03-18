@@ -22,12 +22,10 @@ async function fetchBannerListFromDB(){
       else{
         alert(result.message)
         loaderStore.showLoader = false
-        // Redirect here if needed
       }
       loaderStore.showLoader = false
     })
     .catch((err)=>{
-      //Show toast need "Something went wrong"
       loaderStore.showLoader = false
     })
 }
@@ -37,10 +35,11 @@ onBeforeMount(async() => {
 })
 
 const newItem = ref({
+  bannerId: '',
   title:'',
   banner_image:'',
+  link: '',
   isactive: true,
-  link: ''
 })
 
 async function addBanner(){
@@ -48,6 +47,7 @@ async function addBanner(){
     return
   }
   const data = {
+    bannerId: newItem.value.bannerId,
     title: newItem.value.title,
     banner_image: newItem.value.banner_image,
     isactive: newItem.value.isactive,
@@ -59,7 +59,6 @@ async function addBanner(){
       if(result.code == 1){
         bannerStore.bannerList.push(data)
         alert(result.message || 'Success')
-
       }
       else
         alert(result.message)
@@ -92,6 +91,7 @@ const editingBannerData = ref({});
 const editButtonClicked = ref(false);
 
 function handleEditClick(banner){
+
   editingBannerData.value = banner
   editButtonClicked.value = true
 }
@@ -101,11 +101,44 @@ const closeEditBannerDialog = () =>{
   editButtonClicked.value = false
   editingBannerData.value = {}
 }
+import { updateBannerService } from '@/service/admin/banner';
+
+async function updateBanner(bannerId, updatedData) {
+    if (!confirm("Are you sure you want to update this banner?")) return;
+
+    loaderStore.showLoader = true;
+    try {
+      if(updatedData.isactive=='true')
+        updatedData.isactive=true;
+      else
+        updatedData.isactive=false
+        const result = await updateBannerService(updatedData, userStore.token);
+        if (result.code === 1) {
+            alert("Banner updated successfully");
+            await fetchBannerListFromDB();
+        } else {
+            alert("Failed to update the banner: " + result.message);
+        }
+    } catch (error) {
+        console.error("Error updating banner:", error);
+        alert("An error occurred while trying to update the banner.");
+    } finally {
+        loaderStore.showLoader = false;
+    }
+}
+
 
 </script>
 
 <template>
   <div>
+    <div v-if="loaderStore.showLoader" class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-50 z-50">
+      <div class="loader flex space-x-2">
+        <div class="ball w-6 h-6 rounded-full bg-white"></div>
+        <div class="ball w-6 h-6 rounded-full bg-white"></div>
+        <div class="ball w-6 h-6 rounded-full bg-white"></div>
+      </div>
+    </div>
     <div v-if="editButtonClicked" class="z-[100] w-full h-[100vh] absolute backdrop-blur-sm">
       <div id="default-modal" class="overflow-y-auto overflow-x-hidden flex justify-center">
         <div class="relative p-4 w-full max-w-2xl max-h-full">
@@ -124,14 +157,14 @@ const closeEditBannerDialog = () =>{
             <div class="p-4">
               <input type="text" v-model="editingBannerData.title" placeholder="Title" class="w-full p-2 mb-2 border rounded">
               <input type="text" v-model="editingBannerData.banner_image" placeholder="Banner URL" class="w-full p-2 mb-2 border rounded">
-              <select v-model="editingBannerData.isactive" class="w-full p-2 mb-2 border rounded">
+              <input type="text" v-model="editingBannerData.link" placeholder="Link" class="w-full p-2 mb-4 border rounded">
+              <select v-model="editingBannerData.active" placeholder="Status" class="w-full p-2 mb-2 border rounded">
                 <option value="true">Active</option>
                 <option value="false">Inactive</option>
               </select>
-              <input type="text" v-model="editingBannerData.link" placeholder="Link" class="w-full p-2 mb-4 border rounded">
             </div>
             <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-              <button @click="updateBanner" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save Changes</button>
+              <button @click="()=>updateBanner(editingBannerData.bannerId , editingBannerData)" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save Changes</button>
               <button @click="closeEditBannerDialog" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cancel</button>
             </div>
           </div>
@@ -143,6 +176,7 @@ const closeEditBannerDialog = () =>{
       <table class="w-full text-[16px] text-left text-gray-700 dark:text-gray-400">
         <tbody>
           <tr>
+            <td><input v-model="newItem.bannerId" placeholder="Banner ID" class="w-full p-3 text-base border-2 rounded-md"></td>
             <td><input v-model="newItem.title" placeholder="Title" class="w-full p-3 text-base border-2 rounded-md"></td>
             <td><input v-model="newItem.banner_image" placeholder="Banner Url" class="w-full p-3 text-base border-2 rounded-md"></td>
             <td><input v-model="newItem.isactive" placeholder="Status" class="w-full p-3 text-base border-2 rounded-md"></td>
@@ -163,24 +197,16 @@ const closeEditBannerDialog = () =>{
               Banner ID
             </th>
             <th scope="col" class="py-3 px-6">
-              <div class="flex items-center">
-                Title
-                <a href="#"><svg xmlns="http://www.w3.org/2000/svg" class="ml-1 w-3 h-3" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
-                    <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"></path>
-                  </svg></a>
-              </div>
+              <div class="flex items-center">Title</div>
             </th>
             <th scope="col" class="py-3 px-6">
-              <div class="flex items-center">
-                Status
-                <a href="#"><svg xmlns="http://www.w3.org/2000/svg" class="ml-1 w-3 h-3" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
-                    <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"></path>
-                  </svg></a>
-              </div>
+              <div class="flex items-center">Banner Image</div>
+            </th>
+            <th scope="col" class="py-3 px-6">
+              <div class="flex items-center">Status</div>
             </th>
             <th scope="col" class="py-3 px-6">
               <span class="sr-only">Edit</span>
-              
             </th>
           </tr>
         </thead>
@@ -189,6 +215,9 @@ const closeEditBannerDialog = () =>{
             <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
               {{ banner.banner_id }}
             </th>
+            <td class="py-4 px-6">
+              {{ banner.banner_image }}
+            </td>
             <td class="py-4 px-6">
               {{ banner.title }}
             </td>
@@ -211,5 +240,51 @@ const closeEditBannerDialog = () =>{
   </div>
 </template>
 
-<style>
+<style scoped>
+.loader {
+  width: 60px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.ball {
+  list-style: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+.ball:nth-child(1) {
+  animation: bounce-1 2.1s ease-in-out infinite;
+}
+
+@keyframes bounce-1 {
+  50% {
+    transform: translateY(-18px);
+    background-color: green;
+  }
+}
+
+.ball:nth-child(2) {
+  animation: bounce-3 2.1s ease-in-out 0.3s infinite;
+}
+
+@keyframes bounce-2 {
+  50% {
+    transform: translateY(-18px);
+    background-color: green;
+  }
+}
+
+.ball:nth-child(3) {
+  animation: bounce-3 2.1s ease-in-out 0.6s infinite;
+}
+
+@keyframes bounce-3 {
+  50% {
+    transform: translateY(-18px);
+    background-color: green;
+  }
+}
 </style>

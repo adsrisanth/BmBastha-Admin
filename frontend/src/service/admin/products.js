@@ -51,3 +51,4 @@ export async function deleteProductService(productId, token) {
         return { code: -1, message: "An error occurred while trying to delete the product." };
     }
 }
+

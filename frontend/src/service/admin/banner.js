@@ -51,3 +51,25 @@ export async function deleteBannerService(bannerId, token) {
     });
     return response.data; 
 }
+export async function updateBannerService(data, token) {
+    try {
+        console.log(token)
+        console.table(data)
+        return await axios.patch(`${URI}/api/admin/banner/update`, data, {
+            headers: {
+                Authorization: token
+            }
+        })
+        .then((result) => {
+            console.log(result.data)
+            return result.data;
+        })
+        .catch((err) => {
+            console.log(err)
+            return { code: -1, message: "Unable to connect to server" };
+        });
+    } catch (err) {
+        console.log(err)
+        return { code: -1, message: "Unable to connect to server" };
+    }
+}
