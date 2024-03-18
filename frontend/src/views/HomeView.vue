@@ -28,13 +28,13 @@
              Orders
             </router-link>
           </div>
-          <div class="h-[50px]">
+          <!-- <div class="h-[50px]">
             <div>
               <router-link to="/settings" class="inline-flex relative items-center py-[10px] px-[10px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300 hover:text-green-800  transition duration-400 ease-in-out">
                 Settings
               </router-link>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
