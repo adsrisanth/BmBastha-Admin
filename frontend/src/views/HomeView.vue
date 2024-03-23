@@ -77,7 +77,6 @@
             <div v-show="showDropDown" class="absolute right-[10px] z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
               <div class="py-1 text-left" role="none">
                 <a href="#" class="text-green-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">Profile</a>
-                <a href="#" class="text-green-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-1">ABC</a>
                 <form method="POST" action="#" role="none">
                   <button type="submit" class="text-green-700 block w-full px-4 py-2 text-left text-sm" role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
                 </form>

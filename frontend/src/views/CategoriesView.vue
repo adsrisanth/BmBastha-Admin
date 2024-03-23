@@ -95,6 +95,11 @@ const closeEditProductDialog = () => {
   editButtonClicked.value = false;
   editingProductData.value = {};
 };
+
+const refreshPage = () => {
+  location.reload();
+}
+
 </script>
 
 <template>
@@ -124,7 +129,11 @@ const closeEditProductDialog = () => {
         </div>
       </div>
     </div>
-    <h3 class="text-2xl font-bold text-left py-2 z-10">Products Page</h3>
+    <button @click="refreshPage" class="button">
+      <span class="button__text">Categories Page</span>
+      <span class="button__icon"><svg class="svg" height="48" viewBox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg"><path d="M35.3 12.7c-2.89-2.9-6.88-4.7-11.3-4.7-8.84 0-15.98 7.16-15.98 16s7.14 16 15.98 16c7.45 0 13.69-5.1 15.46-12h-4.16c-1.65 4.66-6.07 8-11.3 8-6.63 0-12-5.37-12-12s5.37-12 12-12c3.31 0 6.28 1.38 8.45 3.55l-6.45 6.45h14v-14l-4.7 4.7z"></path><path d="M0 0h48v48h-48z" fill="none"></path></svg></span>
+    </button>    
+    <br>
     <div class="overflow-x-auto relative sm:rounded-lg z-10">
       <table class="w-full text-[16px] text-left text-gray-700 dark:text-gray-400">
         <tbody>
@@ -160,5 +169,113 @@ const closeEditProductDialog = () => {
     </div>
   </div>
 </template>
-<style>
+<style scoped>
+.loader {
+  width: 60px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.ball {
+  list-style: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+.ball:nth-child(1) {
+  animation: bounce-1 2.1s ease-in-out infinite;
+}
+
+@keyframes bounce-1 {
+  50% {
+    transform: translateY(-18px);
+    background-color: green;
+  }
+}
+
+.ball:nth-child(2) {
+  animation: bounce-3 2.1s ease-in-out 0.3s infinite;
+}
+
+@keyframes bounce-2 {
+  50% {
+    transform: translateY(-18px);
+    background-color: green;
+  }
+}
+
+.ball:nth-child(3) {
+  animation: bounce-3 2.1s ease-in-out 0.6s infinite;
+}
+
+@keyframes bounce-3 {
+  50% {
+    transform: translateY(-18px);
+    background-color: green;
+  }
+}
+.button {
+  --main-focus: #2d8cf0;
+  --font-color:  #14532d;
+  --bg-color-sub: #ffffff;
+  --bg-color: #ffffff;
+  --main-color:  #14532d;
+  position: relative;
+  width: 180px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--main-color);
+  box-shadow: 4px 4px var(--main-color);
+  background-color: var(--bg-color);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.button, .button__icon, .button__text {
+  transition: all 0.3s;
+}
+
+.button .button__text {
+  transform: translateX(8px);
+  color: var(--font-color);
+  font-weight: 800;
+}
+
+.button .button__icon {
+  position: absolute;
+  transform: translateX(135px);
+  height: 100%;
+  width: 39px;
+  background-color: var(--bg-color-sub);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button .svg {
+  width: 20px;
+  fill: var(--main-color);
+}
+
+.button:hover {
+  background: var(--bg-color);
+}
+
+.button:hover .button__text {
+  color: transparent;
+}
+
+.button:hover .button__icon {
+  width: 175px;
+  transform: translateX(0);
+}
+
+.button:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0px 0px var(--main-color);
+}
 </style>
