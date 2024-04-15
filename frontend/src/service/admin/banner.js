@@ -20,6 +20,7 @@ export async function fetchBannerList(token){
             })
     }
     catch(err){
+        console.log(err)
         return {code: -1 , message: "Unable to connect server"}
     }
 }

@@ -11,5 +11,4 @@ export const useBannerStore = defineStore('banner-store',()=>{
         bannerList,
         isAddingItemInProgess
     }
-
 })

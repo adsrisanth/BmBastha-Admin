@@ -1,100 +1,131 @@
 <script setup>
-import { useProductStore } from '@/stores/admin/ProductStore';
-import { ref, onBeforeMount } from 'vue';
+
+import { useCategoriesStore } from '@/stores/admin/CategoriesStore';
+import { ref , onBeforeMount } from 'vue'
 import { useUserStore } from '@/stores/UserStore';
-import { fetchProductList, addProductService } from '@/service/admin/products';
+import { fetchCategoriesList , addCategoriesService } from '@/service/admin/categories';
 import { useLoaderStore } from '@/stores/LoaderStore';
 
-const loaderStore = useLoaderStore();
-const productStore = useProductStore();
-const userStore = useUserStore();
+const loaderStore = useLoaderStore()
+const categoriesStore = useCategoriesStore()
+const userStore = useUserStore()
 
-async function fetchProductListFromDB() {
-  loaderStore.showLoader = true;
-  await fetchProductList(userStore.token)
-    .then((result) => {
-      if (result.code === 1) {
-        console.log(result);
-        productStore.productList = result.data;
-        loaderStore.showLoader = false;
-      } else {
-        alert(result.message);
-        loaderStore.showLoader = false;
+async function fetchCategoriesListFromDB(){
+  loaderStore.showLoader = true
+  await fetchCategoriesList(userStore.token)
+    .then((result)=>{
+      if(result.code == 1){
+        console.log(result)
+        categoriesStore.categoriesList = result.data
+        loaderStore.showLoader = false
       }
-      loaderStore.showLoader = false;
+      else{
+        alert(result.message)
+        loaderStore.showLoader = false
+      }
+      loaderStore.showLoader = false
     })
-    .catch((err) => {
-      loaderStore.showLoader = false;
-    });
+    .catch((err)=>{
+      loaderStore.showLoader = false
+    })
 }
 
-onBeforeMount(async () => {
-  await fetchProductListFromDB();
-});
+onBeforeMount(async() => {
+  await fetchCategoriesListFromDB()
+})
 
 const newItem = ref({
-  productId: '',
-  image: '',
-  isactive: true,
+  categoriesId: '',
+  title:'',
+  categories_image:'',
   link: '',
-});
+  isorganic: true,
+})  
 
-async function addProduct() {
-  if (newItem.value.title.length === 0 || newItem.value.image.length === 0) {
-    return;
+async function addCategories(){
+  if(newItem.value.title.length == 0 || newItem.value.categories_image.length == 0){
+    return
   }
   const data = {
+    categoriesId: newItem.value.categoriesId,
     title: newItem.value.title,
-    image: newItem.value.image,
-    isactive: newItem.value.isactive,
-    link: newItem.value.link,
-  };
-  productStore.isAddingItemInProgress = true;
-  await addProductService(data, userStore.token)
-    .then((result) => {
-      if (result.code === 1) {
-        productStore.productList.push(data);
-        alert(result.message || 'Success');
-      } else {
-        alert(result.message);
-      }
-    });
-  productStore.isAddingItemInProgress = false;
-}
-
-import { deleteProductService } from '@/service/admin/products';
-async function deleteProduct(productId) {
-  if (!confirm('Are you sure you want to delete this product?')) return;
-
-  loaderStore.showLoader = true;
-  try {
-    const result = await deleteProductService(productId, userStore.token);
-    if (result.code === 1) {
-      alert('Product deleted successfully');
-      await fetchProductListFromDB();
-    } else {
-      alert('Failed to delete the product: ' + result.message);
-    }
-  } catch (error) {
-    console.error('Error deleting product:', error);
-    alert('An error occurred while trying to delete the product.');
-  } finally {
-    loaderStore.showLoader = false;
+    categories_image: newItem.value.categories_image,
+    isorganic: newItem.value.isorganic,
+    link: newItem.value.link
   }
+  categoriesStore.isAddingItemInProgess = true
+  await addCategoriesService(data , userStore.token)
+    .then((result)=>{
+      if(result.code == 1){
+        categoriesStore.categoriesList.push(data)
+        alert(result.message || 'Success')
+      }
+      else
+        alert(result.message)
+    })
+    categoriesStore.isAddingItemInProgess = false
 }
 
-const editingProductData = ref({});
+import { deleteCategoriesService } from '@/service/admin/categories'; 
+async function deleteCategories(categoriesId) {
+    if (!confirm("Are you sure you want to delete this categories?")) return;
+
+    loaderStore.showLoader = true; 
+    try {
+        const result = await deleteCategoriesService(categoriesId, userStore.token);
+        if (result.code == 1) {
+            alert("Categories deleted successfully");
+            await fetchCategoriesListFromDB();
+        } else {
+            alert("Failed to delete the Categories: " + result.message);
+        }
+    } catch (error) {
+        console.error("Error deleting Categories:", error);
+        alert("An error occurred while trying to delete the Categories.");
+    } finally {
+        loaderStore.showLoader = false; 
+    }
+}
+
+const editingCategoriesData = ref({});
 const editButtonClicked = ref(false);
 
-function handleEditClick(product) {
-  editingProductData.value = product;
-  editButtonClicked.value = true;
+function handleEditClick(categories){
+
+  editingCategoriesData.value = categories
+  editButtonClicked.value = true
 }
 
-const closeEditProductDialog = () => {
-  editButtonClicked.value = false;
-  editingProductData.value = {};
-};
+
+const closeEditCategoriesDialog = () =>{
+  editButtonClicked.value = false
+  editingCategoriesData.value = {}
+}
+import { updateCategoriesService } from '@/service/admin/categories';
+
+async function updateCategories(categoriesId, updatedData) {
+    if (!confirm("Are you sure you want to update this Categories?")) return;
+
+    loaderStore.showLoader = true;
+    try {
+      if(updatedData.isorganic=='true')
+        updatedData.isorganic=true;
+      else
+        updatedData.isorganic=false
+        const result = await updateCategoriesService(updatedData, userStore.token);
+        if (result.code === 1) {
+            alert("Categories updated successfully");
+            await fetchCategoriesListFromDB();
+        } else {
+            alert("Failed to update the Categories: " + result.message);
+        }
+    } catch (error) {
+        console.error("Error updating Categories:", error);
+        alert("An error occurred while trying to update the Categories.");
+    } finally {
+        loaderStore.showLoader = false;
+    }
+}
 
 const refreshPage = () => {
   location.reload();

@@ -96,7 +96,6 @@ function handleEditClick(banner){
   editButtonClicked.value = true
 }
 
-
 const closeEditBannerDialog = () =>{
   editButtonClicked.value = false
   editingBannerData.value = {}
