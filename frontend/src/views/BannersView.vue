@@ -182,11 +182,10 @@ const refreshPage = () => {
       <table class="w-full text-[16px] text-left text-gray-700 dark:text-gray-400">
         <tbody>
           <tr>
-            <td><input v-model="newItem.bannerId" placeholder="Banner ID" class="w-full p-3 text-base border-2 rounded-md"></td>
             <td><input v-model="newItem.title" placeholder="Title" class="w-full p-3 text-base border-2 rounded-md"></td>
-            <td><input v-model="newItem.banner_image" placeholder="Banner Url" class="w-full p-3 text-base border-2 rounded-md"></td>
+            <td><input v-model="newItem.banner_image" placeholder="Banner URL" class="w-full p-3 text-base border-2 rounded-md"></td>
             <td><input v-model="newItem.isactive" placeholder="Status" class="w-full p-3 text-base border-2 rounded-md"></td>
-            <td><input v-model="newItem.link" placeholder="Link" class="w-full p-3 text-base border-2 rounded-md"></td>
+            <td><input v-model="newItem.link" placeholder="Remarks" class="w-full p-3 text-base border-2 rounded-md"></td>
             <td><button :disabled="bannerStore.isAddingItemInProgess" @click="addBanner" class="px-4 py-2 bg-green-500 text-white rounded-md text-base hover:bg-green-600 transition-colors mx-9 my-2">{{ bannerStore.isAddingItemInProgess ? 'Adding ...' : 'Add' }}</button></td>
           </tr>
         </tbody>
